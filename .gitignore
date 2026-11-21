@@ -3,6 +3,9 @@
 .build-private/
 .build-app-*/
 dist/
+/build/linux-deb/
+__pycache__/
+*.pyc
 .swiftpm/
 *.xcuserstate
 .DS_Store

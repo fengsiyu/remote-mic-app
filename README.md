@@ -53,6 +53,25 @@
 
 [下载 Windows 预览版](https://github.com/GetSayAll/remote-mic-app-windows/releases/)
 
+## Linux 版本（候选）
+
+无线麦 SayAll App Linux amd64 候选版面向 Ubuntu 20.04 及以上，提供 ATVV 语音、`SayAll` 虚拟麦克风和基础按键映射。当前版本尚未完成真实 Ubuntu、BlueZ、音频、遥控器和目标语音工具验收，只应作为候选测试包使用。
+
+安装构建产物并重新登录，使 udev `uaccess` 和 uinput 权限生效：
+
+```bash
+sudo apt install ./dist/sayall-linux_0.1.0_amd64.deb
+```
+
+从源码构建：
+
+```bash
+sudo apt install python3-gi gir1.2-gtk-3.0 python3-dbus bluez pulseaudio-utils fakeroot desktop-file-utils
+bash linux/packaging/build-deb.sh
+```
+
+在目标语音工具中选择麦克风 `SayAll`，并把按住说话快捷键设为与应用相同的触发键，默认 `F5`。语音键不使用双击或长按判定，按下立即开始，松开后自然排空尾音。当前不实现 RC003 的 `MIC_EXTEND` 长会话续租，约 60 秒附近的会话行为仍需真机确认；多设备、手机/手表/网页、完整 Onboarding 和第三方输入法自动切换不在本版本范围内。详见 [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md) 和 [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md)。
+
 iOS 正式版：[无线麦 SayAll](https://apps.apple.com/app/%E6%97%A0%E7%BA%BF%E9%BA%A6/id6797208067)
 
 Mac App 继续采用官网下载方式分发，Mac App Store 上架暂时暂停；当前 App Store 上架重点只包含 iOS App 与其内嵌的 Apple Watch App。

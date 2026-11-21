@@ -31,6 +31,7 @@
   - [`feature/mapping-scope-separation/PRODUCT_SPEC.md`](feature/mapping-scope-separation/PRODUCT_SPEC.md)
   - [`feature/common-phrases/PRODUCT_SPEC.md`](feature/common-phrases/PRODUCT_SPEC.md)
   - [`feature/mac-microphone-input/PRODUCT_SPEC.md`](feature/mac-microphone-input/PRODUCT_SPEC.md)
+  - [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md)
   - [`feature/first-run-onboarding/PRODUCT_SPEC.md`](feature/first-run-onboarding/PRODUCT_SPEC.md)
   - [`feature/scroll-region-page-actions/PRODUCT_SPEC.md`](feature/scroll-region-page-actions/PRODUCT_SPEC.md)
   - [`feature/remote-connection-lifecycle/PRODUCT_SPEC.md`](feature/remote-connection-lifecycle/PRODUCT_SPEC.md)
@@ -38,6 +39,7 @@
 - 平台附件使用 `feature/<feature>/platform-<platform>.md`，只能映射平台差异。当前 Onboarding 附件为：
   - [`feature/first-run-onboarding/platform-macos.md`](feature/first-run-onboarding/platform-macos.md)
   - [`feature/first-run-onboarding/platform-windows.md`](feature/first-run-onboarding/platform-windows.md)
+- Linux 平台映射见 [`feature/linux-desktop/platform-linux.md`](feature/linux-desktop/platform-linux.md)。
 - 当前跨硬件行为合同为 [`Testing/HardwareCompatibilityContract.md`](Testing/HardwareCompatibilityContract.md) 和 [`Testing/HardwareVoiceAudioContract.md`](Testing/HardwareVoiceAudioContract.md)。
 - 功能目录结构和档案入口见 [`feature/README.md`](feature/README.md)。
 
@@ -46,6 +48,7 @@
 - 重大发布前必须执行的回归用例唯一索引入口见 [`Testing/MacReleaseRegression.md`](Testing/MacReleaseRegression.md)。该表只定义发布阻断结果、唯一权威步骤和自动化边界；各功能手册不得再维护第二份发布级稳定回归清单。
 - 根目录 [`Testing/`](Testing/) 存放当前测试手册、跨平台合同、候选准备记录和历史测试报告。除明确命名为合同的文件外，测试手册只定义验证方法和证据。
 - 常用语本地候选测试步骤、失败判定和验证边界见 [`Testing/CommonPhrases.md`](Testing/CommonPhrases.md)。
+- Linux amd64 候选版本的安装、连接、语音、按键和权限测试见 [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md)。
 - 临时探针、手工采集及实验包启动器的入库限制见 [`AGENTS.md` 的临时测试工具入库边界](AGENTS.md#临时测试工具入库边界)；正常产品回归与统一发布检查继续保留。
 - 截图、设计稿和界面录制只以 PR 附件或持久链接提供，仓库内只保留 `manifest.json` 索引；规则见 [`AGENTS.md` 的截图与设计稿归档规范](AGENTS.md#截图与设计稿归档规范)。
 - [`Bugs/README.md`](Bugs/README.md) 是证据驱动调查的记录格式和索引；具体调查位于 `Bugs/`。

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=SayAll
+Name[zh_CN]=无线麦 SayAll
+Comment=Wireless voice remote for Linux
+Comment[zh_CN]=Linux 无线语音遥控器
+Exec=sayall-linux
+Icon=sayall-linux
+Terminal=false
+Categories=AudioVideo;
+StartupWMClass=sayall-linux
+Keywords=voice;microphone;remote;SayAll;

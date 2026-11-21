@@ -53,6 +53,25 @@ You are welcome to try it. In principle, the Windows version of SayAll should no
 
 [Download the Windows preview](https://github.com/GetSayAll/remote-mic-app-windows/releases/)
 
+## Linux version (candidate)
+
+The SayAll App Linux amd64 candidate supports Ubuntu 20.04 or later with ATVV voice input, a `SayAll` virtual microphone, and basic button mapping. It has not yet been accepted on real Ubuntu, BlueZ, audio, remote-control, or target voice-tool hardware and must be treated as a candidate test build only.
+
+Install the built package and sign out and back in so the udev `uaccess` and uinput permissions take effect:
+
+```bash
+sudo apt install ./dist/sayall-linux_0.1.0_amd64.deb
+```
+
+Build from source:
+
+```bash
+sudo apt install python3-gi gir1.2-gtk-3.0 python3-dbus bluez pulseaudio-utils fakeroot desktop-file-utils
+bash linux/packaging/build-deb.sh
+```
+
+Choose the `SayAll` microphone in the target voice tool and configure its push-to-talk shortcut to the same trigger key used by the app, `F5` by default. The voice key has no double-click or long-press detection: it starts immediately on press and drains the complete tail after release. This version does not implement RC003 `MIC_EXTEND` long-session renewal, so behavior near 60 seconds still requires real-device validation. Multi-device routing, phone/watch/web clients, full onboarding, and automatic third-party input-method switching are out of scope. See [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md) and [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md).
+
 iOS release: [SayAll on the App Store](https://apps.apple.com/app/sayall/id6797208067)
 
 The Mac app continues to be distributed directly. Mac App Store submission is paused, while the current App Store launch focus is the iOS app and its Apple Watch app.

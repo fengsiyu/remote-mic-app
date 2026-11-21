@@ -20,6 +20,7 @@
 | [按键页作用域拆分](./mapping-scope-separation/PRODUCT_SPEC.md) | 代码完成，等待界面与真机验收 | 输入框聚焦与翻页滚动从按键编辑区迁到独立的「聚焦与翻页」页面；按键页动作筛选由六项收回五项，目标 APP 卡片只显示只读状态摘要与「去配置」跳转。 |
 | [按键页的方案作用域编辑](./button-profile-scope/) | 设计已评审，待开发 | 按键页顶部增加基础映射/方案作用域条，方案作用域下只开放 10 个普通按键并可保存为键位方案；方案页按键区改为只读摘要与跳转。 |
 | [Intel Ventura 独立发行](./intel-ventura-release/) | 已完成 | Intel 使用 macOS 13、x86_64、独立安装包与更新源，并与 Apple Silicon 分别打包。 |
+| [Linux amd64 桌面版](./linux-desktop/) | 候选实现，自动化通过，等待实机验收 | 面向 Ubuntu 20.04 及以上 amd64 的 Python/GTK/BlueZ 客户端；提供 ATVV 语音、`SayAll` 虚拟麦克风、基础按键映射和 `.deb`；真实硬件、音频、输入与 UI 尚未验收。 |
 | [本地语音转写记录](./local-transcript-history/) | 界面迭代完成，等待人工验收 | 默认关闭；独立侧边栏页面使用顶部可展开应用栏、可折叠日期时间线和真实 App 图标筛选，不依赖 AI 或 API Key。 |
 | [Mac 本地原始录音资产](./local-recording-assets/) | 候选代码完成，等待真实硬件验收 | 默认关闭；将 Mac 音频管线中的 PCM 保存为本地 M4A/AAC，并与回眸 session 关联，支持播放、导出、Finder 和可恢复删除。 |
 | [本地 Agent 访问集成](./sayall-mcp-integration/) | 候选代码完成，等待客户端验收 | App 内 Swift Helper 是唯一运行时；`GetSayAll/sayall-mcp` 提供公开契约，访问默认关闭且不需要 Node.js。 |

@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import sys
+
+source_root = Path(__file__).resolve().parent.parent
+if (source_root / "sayall_linux").is_dir():
+    sys.path.insert(0, str(source_root))
+installed_root = Path("/usr/lib/sayall-linux")
+if (installed_root / "sayall_linux").is_dir():
+    sys.path.insert(0, str(installed_root))
+
+from sayall_linux.__main__ import main
+
+raise SystemExit(main())

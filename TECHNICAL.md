@@ -15,6 +15,12 @@
 
 两条发行线保持独立产物与更新源：Apple Silicon 使用默认文件名和 `appcast.xml`，Intel 使用带 `Intel` 的文件名和 `appcast-intel.xml`。构建与验证脚本分别固定目标架构和最低系统版本，不生成 Universal 包。
 
+## Linux amd64 客户端（候选）
+
+Linux 版本不复用 Swift/AppKit 目标，而是位于 `linux/` 的独立 Python 3.8+、GTK 3、BlueZ D-Bus、evdev/uinput 和 PulseAudio/PipeWire Pulse 兼容实现。它面向 Ubuntu 20.04 及以上 `amd64`，通过 `linux/packaging/build-deb.sh` 生成 `dist/sayall-linux_<版本>_amd64.deb`。
+
+当前 Linux 候选提供 ATVV 语音、`SayAll` 虚拟音源、基础按键映射和 GTK 设置窗口；不提供 macOS/Windows 的完整设置、会员、方案、Onboarding、自动更新、手机/手表/网页或第三方输入法自动切换。真实 BlueZ、音频、输入和遥控器验收完成前不得声明兼容。产品行为见 [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md)，平台映射见 [`feature/linux-desktop/platform-linux.md`](feature/linux-desktop/platform-linux.md)，验证步骤见 [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md)。
+
 ## 模块结构
 
 | 模块 | 主要职责 |

@@ -1,5 +1,11 @@
 # TODO
 
+- [ ] Linux amd64 桌面版（候选）
+  - 2026-11-21：新增 Ubuntu 20.04+ amd64 的 Python 3.8/GTK3/BlueZ 客户端、ATVV 语音、`SayAll` 虚拟麦克风、基础按键映射、udev/uinput 规则和 `.deb` 打包入口。
+  - 2026-11-21：31 项协议、解码、配置、音频排空、会话状态、设备切换和日志测试通过；编译检查、桌面入口校验、`.deb` 构建和打包后 `--version` 加载通过。
+  - 未完成：真实 Ubuntu 20.04+、BlueZ 配对和 GATT 通知、PulseAudio/PipeWire 音源、RC001/RC003 首字与尾字、快速连续会话、X11/Wayland 输入注入、目标语音工具文字上屏、英文实时状态本地化、中英文浅深色实际运行截图。
+  - 未实现 RC003 `MIC_EXTEND` 长会话续租；真实硬件完成前只能标记候选。详见 [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md) 与 [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md)。
+
 - [ ] 设置页其余提示迁移到统一提示组件
   - 2026-11-11：`NoticeBubble` / `NoticeInline` / `NoticeCenter` 已随 PR #994 进入 `main`；按键页「组合动作不可用」已迁完，形态为 v3 7.3 的内联条（图标 + 标题与说明 + 右侧动作）。
   - 2026-11-11：配置导入与导出结果已迁移。`ConfigurationStatus` 从 `tint` + `systemImage` 改为 `tier: NoticeTier`，显示由一行 caption 换成 `NoticeInline`；设置窗口根 `RemoteMicRootView` 挂上了 `noticeHost()`，气泡从此具备显示条件。

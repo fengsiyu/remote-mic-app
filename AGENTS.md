@@ -148,7 +148,7 @@ G-CI.reference=BRANCH_MANAGEMENT.md
 
 ## 跨平台硬件功能一致性规范
 
-- 新增或修改任何硬件适配器时，必须检查并遵守 [`Testing/HardwareCompatibilityContract.md`](Testing/HardwareCompatibilityContract.md)。该合同同时约束 macOS 与 Windows 的设备身份、能力声明、按键边沿、手势、按住连发、连续快速按、语音与触摸互斥、App 切换器、多设备隔离、异常清理、日志和实机矩阵。
+- 新增或修改任何硬件适配器时，必须检查并遵守 [`Testing/HardwareCompatibilityContract.md`](Testing/HardwareCompatibilityContract.md)。该合同同时约束 macOS、Windows 与 Linux（Linux 当前为候选）的设备身份、能力声明、按键边沿、手势、按住连发、连续快速按、语音与触摸互斥、App 切换器、多设备隔离、异常清理、日志和实机矩阵。
 - 平台可以使用不同 API、驱动和虚拟麦克风，但用户可观察语义必须一致；平台或硬件缺少能力时必须明确显示不支持或未知，不得静默替换成含义不同的动作、电脑麦克风或虚假状态。
 - 每次接入新型号都必须在设备测试手册中列出与现有硬件相比的“已对齐、物理不存在、平台不支持、待验证”四类差异，并分别记录 macOS 与 Windows 的自动化、真实设备和最终用户流程结果。
 - 未完成合同规定的对应平台实机矩阵时，只能称为候选，不得因另一个平台、另一个型号、模拟器、单元测试、构建或签名通过而宣称兼容。
