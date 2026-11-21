@@ -3,7 +3,7 @@
 - [ ] Linux amd64 桌面版（候选）
   - 2026-11-21：新增 Ubuntu 20.04+ amd64 的 Python 3.8/GTK3/BlueZ 客户端、ATVV 语音、`SayAll` 虚拟麦克风、基础按键映射、udev/uinput 规则和 `.deb` 打包入口。
   - 2026-11-21：31 项协议、解码、配置、音频排空、会话状态、设备切换和日志测试通过；编译检查、桌面入口校验、`.deb` 构建和打包后 `--version` 加载通过。
-  - 2026-11-21：新增 `Linux CI` workflow，在 `ubuntu-22.04` 上使用 Python 3.8 构建 `.deb`、验证打包后 CLI 并上传 14 天 artifact；CI 不替代真实蓝牙、音频、输入和遥控器验收。
+  - 2026-11-21：新增 `Linux CI` workflow，在 `ubuntu-22.04` 上使用 Python 3.8 构建 `.deb`、校验 runner 与产物均为 amd64、验证打包后 CLI 并上传 14 天 artifact；CI 不替代真实蓝牙、音频、输入和遥控器验收。
   - 未完成：真实 Ubuntu 20.04+、BlueZ 配对和 GATT 通知、PulseAudio/PipeWire 音源、RC001/RC003 首字与尾字、快速连续会话、X11/Wayland 输入注入、目标语音工具文字上屏、英文实时状态本地化、中英文浅深色实际运行截图。
   - 未实现 RC003 `MIC_EXTEND` 长会话续租；真实硬件完成前只能标记候选。详见 [`feature/linux-desktop/PRODUCT_SPEC.md`](feature/linux-desktop/PRODUCT_SPEC.md) 与 [`Testing/LinuxDesktop.md`](Testing/LinuxDesktop.md)。
 

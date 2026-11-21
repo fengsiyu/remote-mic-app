@@ -9,6 +9,7 @@
 | 语言与运行时 | Python 3.8+，使用 Ubuntu 20.04 自带的 GTK 3 和 D-Bus 绑定 |
 | 界面 | GTK 3 窗口；可选 Ayatana/AppIndicator 状态栏 |
 | 安装 | `.deb`，入口 `scripts` 对应的 `linux/packaging/build-deb.sh` |
+| 打包架构 | 只允许在 `amd64` 主机上构建 `Architecture: amd64` 的包；CI 同时校验 runner 和产物架构 |
 | 自启动 | `/etc/xdg/autostart/sayall-linux.desktop` 调用 `sayall-linux --minimized` |
 | 单实例 | 当前不提供跨进程锁；重复启动会重复初始化音频和输入接管，测试时必须只运行一个实例 |
 

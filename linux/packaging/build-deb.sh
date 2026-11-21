@@ -3,7 +3,16 @@ set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 VERSION="${SAYALL_LINUX_VERSION:-0.1.0}"
-ARCH="amd64"
+ARCH="${SAYALL_LINUX_ARCH:-amd64}"
+if [[ "$ARCH" != "amd64" ]]; then
+  printf 'unsupported Linux package architecture: %s (only amd64 is currently supported)\n' "$ARCH" >&2
+  exit 1
+fi
+HOST_ARCH="$(dpkg --print-architecture 2>/dev/null || true)"
+if [[ "$HOST_ARCH" != "amd64" ]]; then
+  printf 'sayall-linux must be built on an amd64 host (found %s)\n' "${HOST_ARCH:-unknown}" >&2
+  exit 1
+fi
 PACKAGE_NAME="sayall-linux"
 BUILD_ROOT="$ROOT/build/linux-deb"
 PACKAGE_ROOT="$BUILD_ROOT/${PACKAGE_NAME}_${VERSION}_${ARCH}"

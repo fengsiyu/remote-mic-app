@@ -36,6 +36,8 @@ jobs:
     # actual Ubuntu 20.04+ installation remains part of the real-device matrix.
     runs-on: ubuntu-22.04
     timeout-minutes: 20
+    env:
+      SAYALL_LINUX_ARCH: amd64
     steps:
       - name: Check out repository
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -57,6 +59,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends fakeroot desktop-file-utils
 
+      - name: Verify amd64 runner
+        run: |
+          uname -m
+          dpkg --print-architecture
+          test "$(uname -m)" = "x86_64"
+          test "$(dpkg --print-architecture)" = "amd64"
+
       - name: Check patch formatting
         run: |
           if [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
@@ -73,6 +82,7 @@ jobs:
           package="$(find dist -maxdepth 1 -name 'sayall-linux_*_amd64.deb' -print -quit)"
           test -n "$package"
           dpkg-deb --info "$package"
+          test "$(dpkg-deb --field "$package" Architecture)" = "amd64"
           tmpdir="$(mktemp -d)"
           dpkg-deb -x "$package" "$tmpdir"
           PYTHONPATH="$tmpdir/usr/lib/sayall-linux" python3 "$tmpdir/usr/bin/sayall-linux" --version
@@ -80,6 +90,14 @@ jobs:
             echo "Package contains Python bytecode caches" >&2
             exit 1
           fi
+          sha256sum "$package"
+          {
+            echo "### Linux amd64 package"
+            echo "- File: \`$(basename "$package")\`"
+            echo "- Version: \`$(dpkg-deb --field "$package" Version)\`"
+            echo "- Architecture: \`$(dpkg-deb --field "$package" Architecture)\`"
+            echo "- SHA-256: \`$(sha256sum "$package" | awk '{print $1}')\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload .deb artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
