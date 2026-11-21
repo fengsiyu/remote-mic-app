@@ -31,6 +31,8 @@ dpkg-deb --info dist/sayall-linux_0.1.0_amd64.deb
 
 通过标准：31 项单元测试全部通过；编译和脚本语法检查无错误；桌面入口无 error；`.deb` 可构建并能通过 `--version` 加载。
 
+线上 `Linux CI` workflow 使用 `ubuntu-22.04` 和 Python 3.8 执行同一构建入口，验证 `.deb` 解包后的 `--version`，并上传 14 天 artifact。CI 只证明构建、打包和 CLI 加载，不覆盖真实 BlueZ、PulseAudio/PipeWire、输入注入或目标工具文字上屏。
+
 ## 实机用例
 
 ### 1. 安装、启动与卸载边界

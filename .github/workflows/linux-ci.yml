@@ -1,0 +1,90 @@
+name: Linux CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "linux/**"
+      - "feature/linux-desktop/**"
+      - "Testing/LinuxDesktop.md"
+      - "Testing/HardwareCompatibilityContract.md"
+      - "Testing/HardwareVoiceAudioContract.md"
+      - ".github/workflows/linux-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "linux/**"
+      - "feature/linux-desktop/**"
+      - "Testing/LinuxDesktop.md"
+      - "Testing/HardwareCompatibilityContract.md"
+      - "Testing/HardwareVoiceAudioContract.md"
+      - ".github/workflows/linux-ci.yml"
+
+concurrency:
+  group: linux-ci-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name == 'pull_request' && 'pr' || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build-deb:
+    name: Build Linux amd64 package
+    # The hosted ubuntu-20.04 runner is retired. The Linux client is pure
+    # Python, so this job pins the minimum supported Python 3.8 runtime;
+    # actual Ubuntu 20.04+ installation remains part of the real-device matrix.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Confirm minimum Python runtime
+        run: |
+          python3 --version
+          python3 -c 'import sys; assert sys.version_info[:2] == (3, 8), sys.version'
+
+      - name: Ensure packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends fakeroot desktop-file-utils
+
+      - name: Check patch formatting
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            git diff --check "${{ github.event.pull_request.base.sha }}...HEAD"
+          elif [[ -n "${{ github.event.before }}" && "${{ github.event.before }}" != 0000000000000000000000000000000000000000 ]]; then
+            git diff --check "${{ github.event.before }}..HEAD"
+          fi
+
+      - name: Build and test Linux package
+        run: bash linux/packaging/build-deb.sh
+
+      - name: Verify packaged CLI
+        run: |
+          package="$(find dist -maxdepth 1 -name 'sayall-linux_*_amd64.deb' -print -quit)"
+          test -n "$package"
+          dpkg-deb --info "$package"
+          tmpdir="$(mktemp -d)"
+          dpkg-deb -x "$package" "$tmpdir"
+          PYTHONPATH="$tmpdir/usr/lib/sayall-linux" python3 "$tmpdir/usr/bin/sayall-linux" --version
+          if dpkg-deb -c "$package" | grep -E '__pycache__|\.pyc$'; then
+            echo "Package contains Python bytecode caches" >&2
+            exit 1
+          fi
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sayall-linux-deb-${{ github.sha }}-${{ github.run_attempt }}
+          path: dist/sayall-linux_*_amd64.deb
+          if-no-files-found: error
+          retention-days: 14
