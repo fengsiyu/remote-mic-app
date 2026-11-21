@@ -38,6 +38,7 @@ jobs:
     timeout-minutes: 20
     env:
       SAYALL_LINUX_ARCH: amd64
+      PYTHONUNBUFFERED: "1"
     steps:
       - name: Check out repository
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -55,9 +56,16 @@ jobs:
           python3 -c 'import sys; assert sys.version_info[:2] == (3, 8), sys.version'
 
       - name: Ensure packaging tools
+        timeout-minutes: 5
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends fakeroot desktop-file-utils
+          set -euxo pipefail
+          echo "Updating apt package lists..."
+          timeout 180s sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get update
+          echo "Installing packaging tools..."
+          timeout 180s sudo env DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
+            apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold \
+            install -y --no-install-recommends fakeroot desktop-file-utils
+          echo "Packaging tools ready."
 
       - name: Verify amd64 runner
         run: |
@@ -75,10 +83,17 @@ jobs:
           fi
 
       - name: Build and test Linux package
-        run: bash linux/packaging/build-deb.sh
+        timeout-minutes: 10
+        run: |
+          set -euxo pipefail
+          echo "Building and testing the Linux package..."
+          bash linux/packaging/build-deb.sh
+          echo "Linux package build completed."
 
       - name: Verify packaged CLI
         run: |
+          set -euxo pipefail
+          echo "Verifying packaged CLI and metadata..."
           package="$(find dist -maxdepth 1 -name 'sayall-linux_*_amd64.deb' -print -quit)"
           test -n "$package"
           dpkg-deb --info "$package"

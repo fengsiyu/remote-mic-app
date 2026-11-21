@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PYTHONUNBUFFERED=1
+
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 VERSION="${SAYALL_LINUX_VERSION:-0.1.0}"
 ARCH="${SAYALL_LINUX_ARCH:-amd64}"
@@ -21,9 +23,13 @@ OUTPUT="$OUTPUT_DIR/${PACKAGE_NAME}_${VERSION}_${ARCH}.deb"
 
 command -v dpkg-deb >/dev/null
 command -v desktop-file-validate >/dev/null
+command -v timeout >/dev/null
 
-PYTHONPATH="$ROOT/linux${PYTHONPATH:+:$PYTHONPATH}" python3 -m unittest discover -s "$ROOT/linux/tests" -t "$ROOT/linux"
-python3 -m compileall -q "$ROOT/linux/sayall_linux"
+printf 'Running Linux unit tests...\n'
+timeout 120s env PYTHONPATH="$ROOT/linux${PYTHONPATH:+:$PYTHONPATH}" \
+  python3 -u -m unittest discover -s "$ROOT/linux/tests" -t "$ROOT/linux"
+printf 'Compiling Python sources...\n'
+python3 -u -m compileall -q "$ROOT/linux/sayall_linux"
 
 rm -rf -- "$PACKAGE_ROOT"
 mkdir -p \
@@ -82,5 +88,6 @@ chmod 755 "$PACKAGE_ROOT/DEBIAN/postinst"
 
 desktop-file-validate "$PACKAGE_ROOT/usr/share/applications/sayall-linux.desktop"
 desktop-file-validate "$PACKAGE_ROOT/etc/xdg/autostart/sayall-linux.desktop"
-fakeroot dpkg-deb --build "$PACKAGE_ROOT" "$OUTPUT" >/dev/null
+printf 'Building deb package...\n'
+timeout 120s fakeroot dpkg-deb --build "$PACKAGE_ROOT" "$OUTPUT" >/dev/null
 printf '%s\n' "$OUTPUT"
